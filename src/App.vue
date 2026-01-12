@@ -23,23 +23,45 @@ const chatHistory = ref([
 ]);
 
 const pedirEjercicios = async () => {
-  if (isLoading.value) return;
+  if (isLoading.value) return; 
 
   isLoading.value = true;
 
   try {
-    const respuestaApi = await generarEjercicios(materia.value, nivel.value, cantidad.value);
+    const nuevoMensajeChat = {
+      id: Date.now(),
+      role: 'ai',
+      textoIntro: `Claro, iré generando ${cantidad.value} ejercicios de ${materia.value} para ti:`,
+      problemas: [] 
+    };
     
-    chatHistory.value.push(respuestaApi);
-
+    chatHistory.value.push(nuevoMensajeChat);
+    
     await nextTick();
-    if (chatContainer.value) {
-      chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
-    }
+    if (chatContainer.value) chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+
+    await generarEjercicios(
+      materia.value, 
+      nivel.value, 
+      cantidad.value, 
+      (problemaRecibido) => {
+        
+        nuevoMensajeChat.problemas.push(problemaRecibido);
+
+        nextTick(() => {
+          if (chatContainer.value) {
+            chatContainer.value.scrollTo({
+              top: chatContainer.value.scrollHeight,
+              behavior: 'smooth'
+            });
+          }
+        });
+      }
+    );
 
   } catch (error) {
-    console.error("Error al conectar con la API", error);
-    alert("Hubo un error generando los ejercicios");
+    console.error("Error general:", error);
+    alert("Hubo un error de conexión");
   } finally {
     isLoading.value = false;
   }
@@ -92,13 +114,14 @@ const pedirEjercicios = async () => {
             </p>
 
             <div v-for="problema in mensaje.problemas" :key="problema.id" class="mb-8 last:mb-0 border-b border-gray-200 last:border-0 pb-6 last:pb-0">
-              <h3 class="font-bold text-gray-900 mb-1">{{ problema.titulo }}</h3>
-              <p class="mb-2 text-xs text-purple-600 font-semibold uppercase tracking-wider">{{ problema.tema }}</p>
-              <p class="mb-4 text-gray-700">{{ problema.enunciado }}</p>
               
-              <div class="text-xl font-serif text-center py-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-                <MathRender :formula="problema.formula" :displayMode="true" />
+              <h3 class="font-bold text-gray-900 mb-1">{{ problema.titulo }}</h3>
+              <p class="mb-4 text-xs text-purple-600 font-semibold uppercase tracking-wider">{{ problema.tema }}</p>
+              
+              <div class="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+                <MathRender :text="problema.contenidoCompleto" />
               </div>
+
             </div>
 
           </div>
@@ -122,9 +145,13 @@ const pedirEjercicios = async () => {
           <div class="flex flex-col gap-1">
             <label class="text-xs text-gray-500 font-medium ml-1">Materia</label>
             <select v-model="materia" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-40 p-2.5">
-              <option>Pre- Álgebra</option>
-              <option>Cálculo</option>
-              <option>Geometría</option>
+              <option>Algebra</option>
+              <option>Conteo</option>
+              <option>Geometria</option>
+              <option>Algebra Intermedia</option>
+              <option>PreAlgebra</option>
+              <option>Teoria Numero</option>
+              <option>PreCalculo</option>
             </select>
           </div>
 

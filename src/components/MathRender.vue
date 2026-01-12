@@ -3,22 +3,38 @@ import katex from 'katex';
 import { computed } from 'vue';
 
 const props = defineProps({
-  formula: String,
-  displayMode: { type: Boolean, default: false }
+  text: { type: String, required: true }
 });
 
-const html = computed(() => {
+const partes = computed(() => {
+  if (!props.text) return [];
+  return props.text.split('$');
+});
+
+const renderMath = (formula) => {
   try {
-    return katex.renderToString(props.formula, {
+    const formulaLimpia = formula.replace(/\\\\/g, '\\');
+
+    return katex.renderToString(formulaLimpia, {
       throwOnError: false,
-      displayMode: props.displayMode
+      displayMode: false 
     });
   } catch (e) {
-    return props.formula;
+    return formula;
   }
-});
+};
 </script>
 
 <template>
-  <span v-html="html"></span>
+  <span class="leading-relaxed text-lg text-gray-800">
+    <span v-for="(parte, index) in partes" :key="index + parte">
+      
+      <span v-if="index % 2 === 0">
+        {{ parte }}
+      </span>
+
+      <span v-else v-html="renderMath(parte)" class="text-purple-800 font-serif mx-1"></span>
+    
+    </span>
+  </span>
 </template>
