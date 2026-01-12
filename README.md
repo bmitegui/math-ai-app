@@ -1,5 +1,31 @@
-# Vue 3 + Vite
+# 🧮 Math AI App
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Una aplicación híbrida (Web y Android) construida con **Vue 3** y **Capacitor**. Esta app simula un chat de asistencia matemática con renderizado de fórmulas LaTeX y controles de interfaz fluida.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 🚀 Requisitos Previos
+
+Antes de empezar, asegúrate de tener instalado lo siguiente en tu computadora:
+
+* **Node.js** (Versión 18 o superior): [Descargar aquí](https://nodejs.org/)
+
+## 🛠️ Instalación y Configuración
+
+Sigue estos pasos para clonar el proyecto e instalar las dependencias (librerías):
+
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone [https://github.com/bmitegui/math-ai-app.git](https://github.com/bmitegui/math-ai-app.git)
+    cd math-ai-app
+    ```
+
+2.  **Instalar dependencias:**
+    Este comando leerá el archivo `package.json` e instalará Vue, Tailwind, Capacitor, Katex, etc.
+    ```bash
+    npm install
+    ```
+
+---
+
+## 💻 Ejecución en Modo Web (Desarrollo)
+```bash
+npm run dev
