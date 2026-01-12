@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Importar estilos de Katex para las formulas matemáticas */
+@import "katex/dist/katex.min.css";
+
+body {
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+/* Personalización de la barra de rango (slider) */
+input[type=range] {
+  -webkit-appearance: none; 
+  background: transparent; 
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #1f2937;
+  cursor: pointer;
+  margin-top: -6px; 
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #e5e7eb;
+  border-radius: 2px;
+}
